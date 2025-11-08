@@ -328,28 +328,25 @@ export default {
     Disclosure,
     DisclosureButton,
     DisclosurePanel,
-    useUiStore,
   },
 
   setup() {
     const route = useRoute()
+    const ui = useUiStore()
+    ui.loadSidebarState()
 
     const isUserManagementActive = computed(() => {
       const names = ['user-list', 'user-detail', 'roles', 'permissions']
-
       return names.includes(route.name)
     })
 
     const isUserActive = computed(() => {
       const names = ['user-list', 'user-detail']
-
       return names.includes(route.name)
     })
 
-    const ui = useUiStore()
-    ui.loadSidebarState()
-
     return {
+      ui, // ✅ 一定要 return 出來，template 才能使用
       route,
       isUserManagementActive,
       isUserActive,

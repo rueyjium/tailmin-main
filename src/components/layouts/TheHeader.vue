@@ -74,9 +74,7 @@
 
 <script>
 import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
-
 import { useUiStore } from '@/stores/ui'
-const ui = useUiStore()
 
 export default {
   components: {
@@ -84,6 +82,10 @@ export default {
     MenuButton,
     MenuItems,
     MenuItem,
+  },
+  setup() {
+    const ui = useUiStore()
+    return { ui }
   },
 }
 </script>
