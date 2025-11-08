@@ -1,27 +1,38 @@
 <template>
+  <!-- 手機 Overlay -->
+  <div
+    v-if="ui.mobileSidebarOpen"
+    class="fixed inset-0 bg-black bg-opacity-50 z-40 sm:hidden"
+    @click="ui.closeMobileSidebar"
+  ></div>
+
   <aside
+    class="bg-gray-800 text-gray-300 transition-all duration-300 ease-in-out z-50 overflow-y-auto dark:bg-gray-900"
     :class="[
-      'hidden bg-gray-800 sm:block transition-all duration-300 ease-in-out overflow-y-auto',
       ui.sidebarOpen ? 'w-64' : 'w-16',
+      ui.mobileSidebarOpen ? 'fixed inset-y-0 left-0 w-64' : 'hidden sm:block',
     ]"
   >
     <!-- LOGO -->
-    <div class="py-3 text-2xl uppercase text-center tracking-widest bg-gray-900 border-b-2 border-gray-800 mb-8">
+    <div
+      class="py-3 text-2xl uppercase text-center tracking-widest bg-gray-900 border-b-2 border-gray-800 mb-8 dark:bg-gray-800"
+    >
       <router-link to="/" class="text-white" v-show="ui.sidebarOpen">Tailmin</router-link>
       <span v-show="!ui.sidebarOpen" class="text-white font-bold text-lg">T</span>
     </div>
 
-    <!-- 導覽選單 -->
     <nav class="text-sm text-gray-300">
       <ul class="flex flex-col">
-        <!-- SECTION -->
         <li v-show="ui.sidebarOpen" class="px-4 py-2 text-xs uppercase tracking-wider text-gray-500 font-bold">
           Section
         </li>
 
         <!-- Dashboard -->
         <router-link v-slot="{ isExactActive, href, navigate }" to="/" custom>
-          <li class="px-4 cursor-pointer" :class="[isExactActive ? 'bg-gray-500 text-gray-800' : 'hover:bg-gray-700']">
+          <li
+            class="relative group px-4 cursor-pointer"
+            :class="[isExactActive ? 'bg-gray-500 text-gray-800' : 'hover:bg-gray-700']"
+          >
             <a class="py-3 flex items-center" :href="href" @click="navigate">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -34,24 +45,32 @@
                   stroke-linecap="round"
                   stroke-linejoin="round"
                   stroke-width="2"
-                  d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+                  d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3"
                 />
               </svg>
               <span v-show="ui.sidebarOpen">Dashboard</span>
+              <!-- Tooltip -->
+              <span
+                v-if="!ui.sidebarOpen"
+                class="absolute left-full ml-2 bg-gray-700 text-white text-xs rounded py-1 px-2 opacity-0 group-hover:opacity-100 whitespace-nowrap z-50"
+              >
+                Dashboard
+              </span>
             </a>
           </li>
         </router-link>
 
         <!-- User Management -->
         <li>
-          <Disclosure v-slot="{ open }" :default-open="isUserManagementActive">
+          <Disclosure v-slot="{ open }" :default-open="ui.expandedMenus.includes('users')">
             <DisclosureButton
               class="px-4 py-3 flex items-center w-full hover:bg-gray-700"
               :class="open ? 'bg-gray-700' : ''"
+              @click="ui.toggleMenu('users')"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                class="h-5 w-5 mr-2 flex-shrink-0"
+                class="h-5 w-5 mr-2"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -68,13 +87,19 @@
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   class="h-5 w-5"
+                  :class="open ? 'transform rotate-90' : ''"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
-                  :class="open ? 'transform rotate-90' : ''"
                 >
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                 </svg>
+              </span>
+              <span
+                v-if="!ui.sidebarOpen"
+                class="absolute left-full ml-2 bg-gray-700 text-white text-xs rounded py-1 px-2 opacity-0 group-hover:opacity-100 whitespace-nowrap z-50"
+              >
+                User Management
               </span>
             </DisclosureButton>
 
@@ -82,10 +107,11 @@
               <ul>
                 <!-- Users -->
                 <li>
-                  <Disclosure v-slot="{ open }" :default-open="isUserActive">
+                  <Disclosure v-slot="{ open }" :default-open="ui.expandedMenus.includes('user-sub')">
                     <DisclosureButton
                       class="pl-8 pr-4 py-3 flex items-center w-full hover:bg-gray-700"
                       :class="open ? 'bg-gray-700' : ''"
+                      @click="ui.toggleMenu('user-sub')"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -100,10 +126,10 @@
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           class="h-5 w-5"
+                          :class="open ? 'transform rotate-90' : ''"
                           fill="none"
                           viewBox="0 0 24 24"
                           stroke="currentColor"
-                          :class="open ? 'transform rotate-90' : ''"
                         >
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                         </svg>
@@ -112,7 +138,6 @@
 
                     <DisclosurePanel>
                       <ul>
-                        <!-- User List -->
                         <router-link v-slot="{ isExactActive, href, navigate }" to="/users" custom>
                           <li
                             class="pl-12"
@@ -131,8 +156,6 @@
                             </a>
                           </li>
                         </router-link>
-
-                        <!-- User Detail -->
                         <li class="pl-12 hover:bg-gray-700">
                           <a href="#" class="py-3 flex items-center">
                             <svg
@@ -190,7 +213,7 @@
           <a href="#" class="py-3 flex items-center">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              class="h-5 w-5 mr-2 flex-shrink-0"
+              class="h-5 w-5 mr-2"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -216,12 +239,11 @@
         <li v-show="ui.sidebarOpen" class="px-4 py-2 mt-2 text-xs uppercase tracking-wider text-gray-500 font-bold">
           Apps
         </li>
-
         <li class="px-4 cursor-pointer hover:bg-gray-700">
           <a href="#" class="py-2 flex items-center">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              class="h-5 w-5 mr-2 flex-shrink-0"
+              class="h-5 w-5 mr-2"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -234,7 +256,7 @@
               />
             </svg>
             <span v-show="ui.sidebarOpen">Messages</span>
-            <span v-show="ui.sidebarOpen" class="ml-auto text-xs bg-gray-500 px-2 py-1 rounded-sm"> 16 </span>
+            <span v-show="ui.sidebarOpen" class="ml-auto text-xs bg-gray-500 px-2 py-1 rounded-sm">16</span>
           </a>
         </li>
 
@@ -243,7 +265,7 @@
           <a href="#" class="py-2 flex items-center">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              class="h-5 w-5 mr-2 flex-shrink-0"
+              class="h-5 w-5 mr-2"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -263,7 +285,6 @@
         <li v-show="ui.sidebarOpen" class="px-4 py-2 mt-2 text-xs uppercase tracking-wider text-gray-500 font-bold">
           UI Elements
         </li>
-
         <li class="px-4 cursor-pointer hover:bg-gray-700">
           <router-link :to="{ name: 'card' }" class="py-2 flex items-center">
             <svg class="h-5 w-5 mr-2 flex-shrink-0" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -292,7 +313,6 @@
         <li v-show="ui.sidebarOpen" class="px-4 py-2 mt-2 text-xs uppercase tracking-wider text-gray-500 font-bold">
           Pages
         </li>
-
         <li class="px-4 cursor-pointer hover:bg-gray-700">
           <router-link :to="{ name: 'login' }" class="py-2 flex items-center">
             <svg
