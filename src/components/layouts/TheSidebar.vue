@@ -19,17 +19,29 @@
       :class="ui.sidebarOpen ? 'py-3' : 'py-2'"
     >
       <!-- 展開時：完整版 Logo -->
-      <router-link to="/" class="flex items-center justify-center w-full px-3" v-show="ui.sidebarOpen">
-        <img src="@/assets/images/sinopac_full.png" alt="Bank SinoPac" class="w-full h-auto max-h-16 object-contain" />
+      <router-link
+        to="/"
+        class="flex items-center justify-center w-full px-3 transition duration-300 ease-in-out hover:brightness-110 hover:shadow-md hover:scale-[1.02]"
+        v-show="ui.sidebarOpen"
+      >
+        <img
+          src="@/assets/images/sinopac_full.png"
+          alt="Bank SinoPac"
+          class="w-full h-auto max-h-16 object-contain transition duration-300"
+        />
       </router-link>
 
       <!-- 收合時：小圖標 -->
       <router-link
         to="/"
-        class="flex items-center justify-center transition-transform duration-300 hover:scale-105"
+        class="flex items-center justify-center transition-transform duration-300 hover:scale-110 hover:brightness-110"
         v-show="!ui.sidebarOpen"
       >
-        <img src="@/assets/images/siniopac_icon.svg" alt="Bank SinoPac Icon" class="h-9 w-9 object-contain" />
+        <img
+          src="@/assets/images/siniopac_icon.svg"
+          alt="Bank SinoPac Icon"
+          class="h-9 w-9 object-contain transition duration-300"
+        />
       </router-link>
     </div>
 
