@@ -1,17 +1,18 @@
 <template>
   <header
-    class="flex items-center justify-between bg-gray-900 text-white h-12 px-4 dark:bg-gray-800 transition-colors duration-300"
+    class="flex items-center justify-between bg-white text-gray-800 h-12 px-4 shadow-sm dark:bg-gray-900 dark:text-gray-100 transition-colors duration-300"
   >
-    <!-- 左側控制列 -->
+    <!-- 左側 LOGO + 開關 -->
     <div class="flex items-center space-x-2">
-      <!-- Sidebar 開合 -->
-      <button @click="ui.toggleSidebar" class="p-2 hover:bg-gray-700 rounded" title="Toggle sidebar">
+      <button
+        @click="ui.toggleSidebar"
+        class="p-2 hover:bg-gray-100 rounded dark:hover:bg-gray-700"
+        title="Toggle sidebar"
+      >
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
         </svg>
       </button>
-
-      <!-- LOGO -->
       <span class="font-bold tracking-wide">Tailmin</span>
     </div>
 
@@ -20,7 +21,7 @@
       <!-- 主題切換 -->
       <button
         @click="ui.toggleTheme"
-        class="p-2 rounded hover:bg-gray-700"
+        class="p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700"
         :title="ui.theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'"
       >
         <svg
@@ -46,11 +47,11 @@
       <!-- 使用者選單 -->
       <Menu as="div" class="relative">
         <MenuButton
-          class="flex items-center space-x-2 px-2 py-3 text-sm hover:bg-gray-200 rounded focus:outline-none dark:hover:bg-gray-700"
+          class="flex items-center space-x-2 px-2 py-3 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 rounded focus:outline-none"
         >
           <img
             class="h-8 w-8 rounded-full"
-            src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+            src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
             alt="user"
           />
           <span>John Doe</span>

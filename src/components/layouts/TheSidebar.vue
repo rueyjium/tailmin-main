@@ -1,29 +1,38 @@
 <template>
-  <!-- 手機 Overlay -->
+  <!-- 📱 手機 Overlay -->
   <div
     v-if="ui.mobileSidebarOpen"
     class="fixed inset-0 bg-black bg-opacity-50 z-40 sm:hidden"
     @click="ui.closeMobileSidebar"
   ></div>
 
+  <!-- 🧭 Sidebar 主體 -->
   <aside
-    class="bg-gray-800 text-gray-300 transition-all duration-300 ease-in-out z-50 overflow-y-auto dark:bg-gray-900"
+    class="transition-all duration-300 ease-in-out z-50 overflow-y-auto border-r dark:border-gray-700"
     :class="[
       ui.sidebarOpen ? 'w-64' : 'w-16',
       ui.mobileSidebarOpen ? 'fixed inset-y-0 left-0 w-64' : 'hidden sm:block',
+      ui.theme === 'light' ? 'bg-white text-gray-800 border-gray-200' : 'bg-gray-900 text-gray-200',
     ]"
   >
     <!-- LOGO -->
     <div
-      class="py-3 text-2xl uppercase text-center tracking-widest bg-gray-900 border-b-2 border-gray-800 mb-8 dark:bg-gray-800"
+      class="py-3 text-2xl uppercase text-center tracking-widest border-b mb-8 dark:border-gray-700"
+      :class="ui.theme === 'light' ? 'bg-gray-50 border-gray-200' : 'bg-gray-800 border-gray-700'"
     >
-      <router-link to="/" class="text-white" v-show="ui.sidebarOpen">Tailmin</router-link>
-      <span v-show="!ui.sidebarOpen" class="text-white font-bold text-lg">T</span>
+      <router-link to="/" class="font-semibold" v-show="ui.sidebarOpen">Tailmin</router-link>
+      <span v-show="!ui.sidebarOpen" class="font-bold text-lg">T</span>
     </div>
 
-    <nav class="text-sm text-gray-300">
+    <!-- 導覽 -->
+    <nav class="text-sm">
       <ul class="flex flex-col">
-        <li v-show="ui.sidebarOpen" class="px-4 py-2 text-xs uppercase tracking-wider text-gray-500 font-bold">
+        <!-- Section 標題 -->
+        <li
+          v-show="ui.sidebarOpen"
+          class="px-4 py-2 text-xs uppercase tracking-wider font-bold"
+          :class="ui.theme === 'light' ? 'text-gray-500' : 'text-gray-400'"
+        >
           Section
         </li>
 
@@ -31,12 +40,20 @@
         <router-link v-slot="{ isExactActive, href, navigate }" to="/" custom>
           <li
             class="relative group px-4 cursor-pointer"
-            :class="[isExactActive ? 'bg-gray-500 text-gray-800' : 'hover:bg-gray-700']"
+            :class="[
+              isExactActive
+                ? ui.theme === 'light'
+                  ? 'bg-gray-100 font-semibold'
+                  : 'bg-gray-700 font-semibold'
+                : ui.theme === 'light'
+                ? 'hover:bg-gray-100'
+                : 'hover:bg-gray-700',
+            ]"
           >
             <a class="py-3 flex items-center" :href="href" @click="navigate">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                class="h-5 w-5 mr-2 flex-shrink-0"
+                class="h-5 w-5 mr-2"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -52,7 +69,7 @@
               <!-- Tooltip -->
               <span
                 v-if="!ui.sidebarOpen"
-                class="absolute left-full ml-2 bg-gray-700 text-white text-xs rounded py-1 px-2 opacity-0 group-hover:opacity-100 whitespace-nowrap z-50"
+                class="absolute left-full ml-2 px-2 py-1 text-xs rounded bg-gray-700 text-white opacity-0 group-hover:opacity-100 whitespace-nowrap z-50"
               >
                 Dashboard
               </span>
@@ -60,12 +77,20 @@
           </li>
         </router-link>
 
-        <!-- User Management -->
+        <!-- 👥 User Management -->
         <li>
           <Disclosure v-slot="{ open }" :default-open="ui.expandedMenus.includes('users')">
             <DisclosureButton
-              class="px-4 py-3 flex items-center w-full hover:bg-gray-700"
-              :class="open ? 'bg-gray-700' : ''"
+              class="px-4 py-3 flex items-center w-full"
+              :class="[
+                open
+                  ? ui.theme === 'light'
+                    ? 'bg-gray-100'
+                    : 'bg-gray-700'
+                  : ui.theme === 'light'
+                  ? 'hover:bg-gray-100'
+                  : 'hover:bg-gray-700',
+              ]"
               @click="ui.toggleMenu('users')"
             >
               <svg
@@ -79,7 +104,7 @@
                   stroke-linecap="round"
                   stroke-linejoin="round"
                   stroke-width="2"
-                  d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+                  d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"
                 />
               </svg>
               <span v-show="ui.sidebarOpen">User Management</span>
@@ -95,30 +120,27 @@
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                 </svg>
               </span>
-              <span
-                v-if="!ui.sidebarOpen"
-                class="absolute left-full ml-2 bg-gray-700 text-white text-xs rounded py-1 px-2 opacity-0 group-hover:opacity-100 whitespace-nowrap z-50"
-              >
-                User Management
-              </span>
             </DisclosureButton>
 
             <DisclosurePanel v-show="ui.sidebarOpen">
               <ul>
-                <!-- Users -->
+                <!-- 👤 Users -->
                 <li>
                   <Disclosure v-slot="{ open }" :default-open="ui.expandedMenus.includes('user-sub')">
                     <DisclosureButton
-                      class="pl-8 pr-4 py-3 flex items-center w-full hover:bg-gray-700"
-                      :class="open ? 'bg-gray-700' : ''"
+                      class="pl-8 pr-4 py-3 flex items-center w-full"
+                      :class="[
+                        open
+                          ? ui.theme === 'light'
+                            ? 'bg-gray-100'
+                            : 'bg-gray-700'
+                          : ui.theme === 'light'
+                          ? 'hover:bg-gray-100'
+                          : 'hover:bg-gray-700',
+                      ]"
                       @click="ui.toggleMenu('user-sub')"
                     >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="h-5 w-5 flex-shrink-0"
-                        fill="currentColor"
-                        viewBox="0 0 16 16"
-                      >
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="currentColor" viewBox="0 0 16 16">
                         <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
                       </svg>
                       <span v-show="ui.sidebarOpen">Users</span>
@@ -141,12 +163,20 @@
                         <router-link v-slot="{ isExactActive, href, navigate }" to="/users" custom>
                           <li
                             class="pl-12"
-                            :class="[isExactActive ? 'bg-gray-500 text-gray-800' : 'hover:bg-gray-700']"
+                            :class="[
+                              isExactActive
+                                ? ui.theme === 'light'
+                                  ? 'bg-gray-100 font-semibold'
+                                  : 'bg-gray-700 font-semibold'
+                                : ui.theme === 'light'
+                                ? 'hover:bg-gray-100'
+                                : 'hover:bg-gray-700',
+                            ]"
                           >
                             <a class="py-3 flex items-center" :href="href" @click="navigate">
                               <svg
                                 xmlns="http://www.w3.org/2000/svg"
-                                class="h-5 w-5 flex-shrink-0"
+                                class="h-5 w-5 mr-2"
                                 fill="currentColor"
                                 viewBox="0 0 16 16"
                               >
@@ -156,11 +186,12 @@
                             </a>
                           </li>
                         </router-link>
-                        <li class="pl-12 hover:bg-gray-700">
+
+                        <li class="pl-12" :class="ui.theme === 'light' ? 'hover:bg-gray-100' : 'hover:bg-gray-700'">
                           <a href="#" class="py-3 flex items-center">
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
-                              class="h-5 w-5 flex-shrink-0"
+                              class="h-5 w-5 mr-2"
                               fill="currentColor"
                               viewBox="0 0 16 16"
                             >
@@ -174,12 +205,12 @@
                   </Disclosure>
                 </li>
 
-                <!-- Roles -->
-                <li class="px-8 hover:bg-gray-700">
+                <!-- 🔒 Roles -->
+                <li class="px-8" :class="ui.theme === 'light' ? 'hover:bg-gray-100' : 'hover:bg-gray-700'">
                   <a href="#" class="py-3 flex items-center">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      class="h-5 w-5 flex-shrink-0"
+                      class="h-5 w-5 mr-2"
                       fill="currentColor"
                       viewBox="0 0 16 16"
                     >
@@ -189,12 +220,12 @@
                   </a>
                 </li>
 
-                <!-- Permissions -->
-                <li class="px-8 hover:bg-gray-700">
+                <!-- ⚙ Permissions -->
+                <li class="px-8" :class="ui.theme === 'light' ? 'hover:bg-gray-100' : 'hover:bg-gray-700'">
                   <a href="#" class="py-3 flex items-center">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      class="h-5 w-5 flex-shrink-0"
+                      class="h-5 w-5 mr-2"
                       fill="currentColor"
                       viewBox="0 0 16 16"
                     >
@@ -208,8 +239,8 @@
           </Disclosure>
         </li>
 
-        <!-- Reports -->
-        <li class="px-4 hover:bg-gray-700">
+        <!-- 📊 Reports -->
+        <li class="px-4" :class="ui.theme === 'light' ? 'hover:bg-gray-100' : 'hover:bg-gray-700'">
           <a href="#" class="py-3 flex items-center">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -236,10 +267,14 @@
         </li>
 
         <!-- Apps -->
-        <li v-show="ui.sidebarOpen" class="px-4 py-2 mt-2 text-xs uppercase tracking-wider text-gray-500 font-bold">
+        <li
+          v-show="ui.sidebarOpen"
+          class="px-4 py-2 mt-2 text-xs uppercase tracking-wider font-bold"
+          :class="ui.theme === 'light' ? 'text-gray-500' : 'text-gray-400'"
+        >
           Apps
         </li>
-        <li class="px-4 cursor-pointer hover:bg-gray-700">
+        <li class="px-4" :class="ui.theme === 'light' ? 'hover:bg-gray-100' : 'hover:bg-gray-700'">
           <a href="#" class="py-2 flex items-center">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -256,12 +291,18 @@
               />
             </svg>
             <span v-show="ui.sidebarOpen">Messages</span>
-            <span v-show="ui.sidebarOpen" class="ml-auto text-xs bg-gray-500 px-2 py-1 rounded-sm">16</span>
+            <span
+              v-show="ui.sidebarOpen"
+              class="ml-auto text-xs rounded-sm px-2 py-1"
+              :class="ui.theme === 'light' ? 'bg-blue-100 text-blue-700' : 'bg-gray-600 text-gray-100'"
+            >
+              16
+            </span>
           </a>
         </li>
 
-        <!-- Calendar -->
-        <li class="px-4 cursor-pointer hover:bg-gray-700">
+        <!-- 📅 Calendar -->
+        <li class="px-4" :class="ui.theme === 'light' ? 'hover:bg-gray-100' : 'hover:bg-gray-700'">
           <a href="#" class="py-2 flex items-center">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -282,12 +323,16 @@
         </li>
 
         <!-- UI Elements -->
-        <li v-show="ui.sidebarOpen" class="px-4 py-2 mt-2 text-xs uppercase tracking-wider text-gray-500 font-bold">
+        <li
+          v-show="ui.sidebarOpen"
+          class="px-4 py-2 mt-2 text-xs uppercase tracking-wider font-bold"
+          :class="ui.theme === 'light' ? 'text-gray-500' : 'text-gray-400'"
+        >
           UI Elements
         </li>
-        <li class="px-4 cursor-pointer hover:bg-gray-700">
+        <li class="px-4" :class="ui.theme === 'light' ? 'hover:bg-gray-100' : 'hover:bg-gray-700'">
           <router-link :to="{ name: 'card' }" class="py-2 flex items-center">
-            <svg class="h-5 w-5 mr-2 flex-shrink-0" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path
                 d="M5 3C3.89543 3 3 3.89543 3 5V7C3 8.10457 3.89543 9 5 9H7C8.10457 9 9 8.10457 9 7V5C9 3.89543 8.10457 3 7 3H5Z"
                 fill="currentColor"
@@ -310,14 +355,18 @@
         </li>
 
         <!-- Pages -->
-        <li v-show="ui.sidebarOpen" class="px-4 py-2 mt-2 text-xs uppercase tracking-wider text-gray-500 font-bold">
+        <li
+          v-show="ui.sidebarOpen"
+          class="px-4 py-2 mt-2 text-xs uppercase tracking-wider font-bold"
+          :class="ui.theme === 'light' ? 'text-gray-500' : 'text-gray-400'"
+        >
           Pages
         </li>
-        <li class="px-4 cursor-pointer hover:bg-gray-700">
+        <li class="px-4" :class="ui.theme === 'light' ? 'hover:bg-gray-100' : 'hover:bg-gray-700'">
           <router-link :to="{ name: 'login' }" class="py-2 flex items-center">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              class="h-5 w-5 mr-2 flex-shrink-0"
+              class="h-5 w-5 mr-2"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -344,12 +393,7 @@ import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/vue'
 import { useUiStore } from '@/stores/ui'
 
 export default {
-  components: {
-    Disclosure,
-    DisclosureButton,
-    DisclosurePanel,
-  },
-
+  components: { Disclosure, DisclosureButton, DisclosurePanel },
   setup() {
     const route = useRoute()
     const ui = useUiStore()
@@ -365,12 +409,7 @@ export default {
       return names.includes(route.name)
     })
 
-    return {
-      ui, // ✅ 一定要 return 出來，template 才能使用
-      route,
-      isUserManagementActive,
-      isUserActive,
-    }
+    return { ui, route, isUserManagementActive, isUserActive }
   },
 }
 </script>
