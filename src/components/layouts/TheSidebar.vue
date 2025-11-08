@@ -1,27 +1,36 @@
 <template>
-  <!-- 📱 手機 Overlay -->
+  <!-- 手機 Overlay -->
   <div
     v-if="ui.mobileSidebarOpen"
     class="fixed inset-0 bg-black bg-opacity-50 z-40 sm:hidden"
     @click="ui.closeMobileSidebar"
   ></div>
 
-  <!-- 🧭 Sidebar 主體 -->
   <aside
-    class="transition-all duration-300 ease-in-out z-50 overflow-y-auto border-r dark:border-gray-700"
+    class="bg-white text-gray-700 transition-all duration-300 ease-in-out z-50 overflow-y-auto border-r border-gray-200"
     :class="[
       ui.sidebarOpen ? 'w-64' : 'w-16',
       ui.mobileSidebarOpen ? 'fixed inset-y-0 left-0 w-64' : 'hidden sm:block',
-      ui.theme === 'light' ? 'bg-white text-gray-800 border-gray-200' : 'bg-gray-900 text-gray-200',
     ]"
   >
-    <!-- LOGO -->
+    <!-- 🔶 LOGO 區 -->
     <div
-      class="py-3 text-2xl uppercase text-center tracking-widest border-b mb-8 dark:border-gray-700"
-      :class="ui.theme === 'light' ? 'bg-gray-50 border-gray-200' : 'bg-gray-800 border-gray-700'"
+      class="flex justify-center items-center border-b border-gray-200 bg-white transition-all duration-300"
+      :class="ui.sidebarOpen ? 'py-3' : 'py-2'"
     >
-      <router-link to="/" class="font-semibold" v-show="ui.sidebarOpen">Tailmin</router-link>
-      <span v-show="!ui.sidebarOpen" class="font-bold text-lg">T</span>
+      <!-- 展開時：完整版 Logo -->
+      <router-link to="/" class="flex items-center justify-center w-full px-3" v-show="ui.sidebarOpen">
+        <img src="@/assets/images/sinopac_full.png" alt="Bank SinoPac" class="w-full h-auto max-h-16 object-contain" />
+      </router-link>
+
+      <!-- 收合時：小圖標 -->
+      <router-link
+        to="/"
+        class="flex items-center justify-center transition-transform duration-300 hover:scale-105"
+        v-show="!ui.sidebarOpen"
+      >
+        <img src="@/assets/images/siniopac_icon.svg" alt="Bank SinoPac Icon" class="h-9 w-9 object-contain" />
+      </router-link>
     </div>
 
     <!-- 導覽 -->
