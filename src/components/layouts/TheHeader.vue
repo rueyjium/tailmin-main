@@ -1,5 +1,14 @@
 <template>
-  <header class="flex justify-between bg-white border-b-2 px-4 sm:justify-end sm:px-6">
+  <header class="flex items-center justify-between bg-gray-900 text-white h-12 px-4">
+    <div class="flex items-center space-x-2">
+      <!-- 左側：控制按鈕 -->
+      <button @click="ui.toggleSidebar" class="p-2 hover:bg-gray-700 rounded" title="Toggle sidebar">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+      <span class="font-bold tracking-wide">Tailmin</span>
+    </div>
     <button class="sm:hidden">
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -38,18 +47,7 @@
         leave-to-class="transform opacity-0 scale-95"
       >
         <MenuItems
-          class="
-            origin-top-right
-            absolute
-            right-0
-            w-48
-            shadow-lg
-            py-1
-            bg-white
-            ring-1 ring-black ring-opacity-5
-            divide-y divide-gray-200
-            focus:outline-none
-          "
+          class="origin-top-right absolute right-0 w-48 shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-200 focus:outline-none"
         >
           <div>
             <MenuItem v-slot="{ active }">
@@ -76,6 +74,9 @@
 
 <script>
 import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
+
+import { useUiStore } from '@/stores/ui'
+const ui = useUiStore()
 
 export default {
   components: {

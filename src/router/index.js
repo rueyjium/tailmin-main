@@ -4,11 +4,11 @@ const routes = [
   {
     path: '/',
     name: 'dashboard',
-    component: () => import('@/views/Dashboard.vue'),
+    component: () => import('@/views/Dashboard.vue'), // TheSidebar.vue、TheHeader.vue、TheFooter.vue
     children: [
       {
         path: '',
-        component: () => import('@/views/dashboard/Home.vue'),
+        component: () => import('@/views/dashboard/Home.vue'), // real content of Dashboard
       },
       {
         path: 'users',

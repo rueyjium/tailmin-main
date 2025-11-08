@@ -5,9 +5,9 @@
     <div class="flex flex-col flex-grow bg-gray-200">
       <the-header />
 
-      <div class="mb-auto">
+      <main class="flex-1 overflow-y-auto bg-gray-50 p-4">
         <router-view />
-      </div>
+      </main>
 
       <the-footer />
     </div>
