@@ -1,43 +1,59 @@
-// src/stores/ui.js
-// 全域 UI 狀態管理：Sidebar、主題、展開狀態、RWD Overlay
 import { defineStore } from 'pinia'
+import { ref } from 'vue'
 
-export const useUiStore = defineStore('ui', {
-  state: () => ({
-    sidebarOpen: true, // 桌機 sidebar
-    mobileSidebarOpen: false, // 手機 overlay sidebar
-    theme: localStorage.getItem('theme') || 'light',
-    expandedMenus: JSON.parse(localStorage.getItem('expandedMenus') || '[]'),
-  }),
+export const useUiStore = defineStore('ui', () => {
+  // ---- state ----
+  const sidebarOpen = ref(localStorage.getItem('sidebarOpen') === 'true' || true)
+  const mobileSidebarOpen = ref(false)
+  const theme = ref(localStorage.getItem('theme') || 'light')
+  const expandedMenus = ref(JSON.parse(localStorage.getItem('expandedMenus') || '[]'))
 
-  actions: {
-    toggleSidebar() {
-      this.sidebarOpen = !this.sidebarOpen
-      localStorage.setItem('sidebarOpen', this.sidebarOpen)
-    },
-    toggleMobileSidebar() {
-      this.mobileSidebarOpen = !this.mobileSidebarOpen
-    },
-    closeMobileSidebar() {
-      this.mobileSidebarOpen = false
-    },
-    toggleTheme() {
-      this.theme = this.theme === 'light' ? 'dark' : 'light'
-      document.documentElement.classList.toggle('dark', this.theme === 'dark')
-      localStorage.setItem('theme', this.theme)
-    },
-    toggleMenu(name) {
-      if (this.expandedMenus.includes(name)) {
-        this.expandedMenus = this.expandedMenus.filter((n) => n !== name)
-      } else {
-        this.expandedMenus.push(name)
-      }
-      localStorage.setItem('expandedMenus', JSON.stringify(this.expandedMenus))
-    },
-    loadSidebarState() {
-      const saved = localStorage.getItem('sidebarOpen')
-      if (saved !== null) this.sidebarOpen = saved === 'true'
-      document.documentElement.classList.toggle('dark', this.theme === 'dark')
-    },
-  },
+  // ---- actions ----
+  const toggleSidebar = () => {
+    sidebarOpen.value = !sidebarOpen.value
+    localStorage.setItem('sidebarOpen', sidebarOpen.value)
+  }
+
+  const toggleMobileSidebar = () => {
+    mobileSidebarOpen.value = !mobileSidebarOpen.value
+  }
+
+  const closeMobileSidebar = () => {
+    mobileSidebarOpen.value = false
+  }
+
+  const toggleTheme = () => {
+    theme.value = theme.value === 'light' ? 'dark' : 'light'
+    document.documentElement.classList.toggle('dark', theme.value === 'dark')
+    localStorage.setItem('theme', theme.value)
+  }
+
+  const toggleMenu = (name) => {
+    if (expandedMenus.value.includes(name)) {
+      expandedMenus.value = expandedMenus.value.filter((n) => n !== name)
+    } else {
+      expandedMenus.value.push(name)
+    }
+    localStorage.setItem('expandedMenus', JSON.stringify(expandedMenus.value))
+  }
+
+  const loadSidebarState = () => {
+    const saved = localStorage.getItem('sidebarOpen')
+    if (saved !== null) sidebarOpen.value = saved === 'true'
+    document.documentElement.classList.toggle('dark', theme.value === 'dark')
+  }
+
+  // ---- expose ----
+  return {
+    sidebarOpen,
+    mobileSidebarOpen,
+    theme,
+    expandedMenus,
+    toggleSidebar,
+    toggleMobileSidebar,
+    closeMobileSidebar,
+    toggleTheme,
+    toggleMenu,
+    loadSidebarState,
+  }
 })
