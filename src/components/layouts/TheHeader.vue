@@ -5,7 +5,7 @@
     <!-- 左側 LOGO + 開關 -->
     <div class="flex items-center space-x-2">
       <button
-        @click="ui.toggleSidebar"
+        @click="handleSidebarToggle"
         class="p-2 hover:bg-gray-100 rounded dark:hover:bg-gray-700"
         title="Toggle sidebar"
       >
@@ -13,6 +13,7 @@
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
         </svg>
       </button>
+
       <span class="font-bold tracking-wide">Common Platform</span>
     </div>
 
@@ -120,18 +121,30 @@
 <script>
 import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
 import { useUiStore } from '@/stores/ui'
+import { onMounted, onBeforeUnmount } from 'vue'
 
 export default {
-  components: {
-    Menu,
-    MenuButton,
-    MenuItems,
-    MenuItem,
-  },
+  components: { Menu, MenuButton, MenuItems, MenuItem },
   setup() {
     const ui = useUiStore()
     ui.loadSidebarState()
-    return { ui }
+
+    const handleSidebarToggle = () => {
+      if (window.innerWidth < 768) {
+        ui.toggleMobileSidebar()
+      } else {
+        ui.toggleSidebar()
+      }
+    }
+
+    const handleResize = () => {
+      if (window.innerWidth >= 768) ui.closeMobileSidebar()
+    }
+
+    onMounted(() => window.addEventListener('resize', handleResize))
+    onBeforeUnmount(() => window.removeEventListener('resize', handleResize))
+
+    return { ui, handleSidebarToggle }
   },
 }
 </script>
