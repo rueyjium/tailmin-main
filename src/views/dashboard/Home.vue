@@ -317,44 +317,31 @@
   </div>
 </template>
 
-<script>
-import VueApexCharts from 'vue3-apexcharts'
+<script setup>
+import { defineAsyncComponent } from 'vue'
 import { TabGroup, TabList, Tab, TabPanels, TabPanel } from '@headlessui/vue'
 import topAuthors from '@/data/home/topAuthors.json'
 import recentSales from '@/data/home/recentSales.json'
 
-export default {
-  components: {
-    apexchart: VueApexCharts,
-    TabGroup,
-    TabList,
-    Tab,
-    TabPanels,
-    TabPanel,
-  },
-  setup() {
-    const pageViewOptions = {
-      chart: { id: 'pageview-chart', toolbar: { show: false } },
-      colors: ['#777'],
-      dataLabels: { enabled: false },
-      stroke: { curve: 'smooth' },
-      xaxis: { categories: ['Aug 1', 'Aug 2', 'Aug 3', 'Aug 4', 'Aug 5', 'Aug 6', 'Aug 7'] },
-      yaxis: { labels: { style: { colors: '#888' } } },
-      grid: { borderColor: '#eee' },
-    }
-
-    const pageViewSeries = [{ name: 'Page view', data: [3087, 4403, 3456, 2864, 4956, 6023, 7063] }]
-
-    const sessionsOptions = {
-      chart: { id: 'sessions-chart' },
-      labels: ['Desktop', 'Mobile', 'Tablet'],
-      legend: { position: 'bottom' },
-      colors: ['#999', '#ccc', '#eee'],
-    }
-
-    const sessionsSeries = [70.9, 27.2, 1.9]
-
-    return { pageViewOptions, pageViewSeries, sessionsOptions, sessionsSeries, topAuthors, recentSales }
-  },
+// Chart options
+const pageViewOptions = {
+  chart: { id: 'pageview-chart', toolbar: { show: false } },
+  colors: ['#777'],
+  dataLabels: { enabled: false },
+  stroke: { curve: 'smooth' },
+  xaxis: { categories: ['Aug 1', 'Aug 2', 'Aug 3', 'Aug 4', 'Aug 5', 'Aug 6', 'Aug 7'] },
+  yaxis: { labels: { style: { colors: '#888' } } },
+  grid: { borderColor: '#eee' },
 }
+
+const pageViewSeries = [{ name: 'Page view', data: [3087, 4403, 3456, 2864, 4956, 6023, 7063] }]
+
+const sessionsOptions = {
+  chart: { id: 'sessions-chart' },
+  labels: ['Desktop', 'Mobile', 'Tablet'],
+  legend: { position: 'bottom' },
+  colors: ['#999', '#ccc', '#eee'],
+}
+
+const sessionsSeries = [70.9, 27.2, 1.9]
 </script>

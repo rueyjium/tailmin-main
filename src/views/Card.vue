@@ -9,6 +9,7 @@
       <span class="text-gray-600">Card</span>
     </div>
   </div>
+
   <div class="px-4 mt-8 sm:px-8">
     <CardStacked />
     <hr />
@@ -16,13 +17,6 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { CardHorizontal, CardStacked } from '@/components/UI/Card'
-
-export default {
-  components: {
-    CardHorizontal,
-    CardStacked,
-  },
-}
 </script>

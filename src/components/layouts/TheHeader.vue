@@ -118,39 +118,28 @@
   </header>
 </template>
 
-<script>
+<script setup>
 import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
 import { useUiStore } from '@/stores/ui'
 import { onMounted, onBeforeUnmount } from 'vue'
 
-export default {
-  components: { Menu, MenuButton, MenuItems, MenuItem },
-  setup() {
-    const ui = useUiStore()
-    ui.loadSidebarState()
+const ui = useUiStore()
+ui.loadSidebarState()
 
-    const handleSidebarToggle = () => {
-      if (window.innerWidth < 768) {
-        ui.toggleMobileSidebar()
-      } else {
-        ui.toggleSidebar()
-      }
-    }
-
-    const handleResize = () => {
-      if (window.innerWidth >= 768) ui.closeMobileSidebar()
-    }
-
-    onMounted(() => window.addEventListener('resize', handleResize))
-    onBeforeUnmount(() => window.removeEventListener('resize', handleResize))
-
-    return { ui, handleSidebarToggle }
-  },
+const handleSidebarToggle = () => {
+  if (window.innerWidth < 768) ui.toggleMobileSidebar()
+  else ui.toggleSidebar()
 }
+
+const handleResize = () => {
+  if (window.innerWidth >= 768) ui.closeMobileSidebar()
+}
+
+onMounted(() => window.addEventListener('resize', handleResize))
+onBeforeUnmount(() => window.removeEventListener('resize', handleResize))
 </script>
 
 <style scoped>
-/* 動畫平滑 */
 header {
   transition: background-color 0.3s ease;
 }

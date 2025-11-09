@@ -444,36 +444,19 @@
   </aside>
 </template>
 
-<script>
+<script setup>
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/vue'
 import { useUiStore } from '@/stores/ui'
 
-export default {
-  components: { Disclosure, DisclosureButton, DisclosurePanel },
-  setup() {
-    const route = useRoute()
-    const ui = useUiStore()
-    ui.loadSidebarState()
+const route = useRoute()
+const ui = useUiStore()
+ui.loadSidebarState()
 
-    // ✅ 手機開啟時強制顯示完整清單
-    const isSidebarFullyOpen = computed(() => ui.sidebarOpen || ui.mobileSidebarOpen)
-
-    const isUserManagementActive = computed(() => {
-      const names = ['user-list', 'user-detail', 'roles', 'permissions']
-      return names.includes(route.name)
-    })
-
-    const isUserActive = computed(() => {
-      const names = ['user-list', 'user-detail']
-      return names.includes(route.name)
-    })
-
-    // ✅ 一定要 return isSidebarFullyOpen
-    return { ui, route, isSidebarFullyOpen, isUserManagementActive, isUserActive }
-  },
-}
+const isSidebarFullyOpen = computed(() => ui.sidebarOpen || ui.mobileSidebarOpen)
+const isUserManagementActive = computed(() => ['user-list', 'user-detail', 'roles', 'permissions'].includes(route.name))
+const isUserActive = computed(() => ['user-list', 'user-detail'].includes(route.name))
 </script>
 
 <style scoped>

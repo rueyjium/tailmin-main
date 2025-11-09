@@ -25,8 +25,8 @@
   </div>
 </template>
 
-<script>
-export default {
+<script setup>
+defineOptions({
   name: 'CardStacked',
-}
+})
 </script>
