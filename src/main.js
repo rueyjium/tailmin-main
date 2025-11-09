@@ -11,9 +11,7 @@ const app = createApp(App)
 app.use(router)
 app.use(createPinia())
 
-// ✨ 全域註冊 ApexCharts
 app.use(VueApexCharts)
-// ✨ 讓 template 可直接使用 <apexchart>
 app.component('apexchart', VueApexCharts)
 
 app.mount('#app')
