@@ -11,7 +11,7 @@ const routes = [
         component: () => import('@/views/dashboard/Home.vue'), // real content of Dashboard
       },
       {
-        path: 'users',
+        path: '/users',
         name: 'user-list',
         component: () => import('@/views/dashboard/users/UserList.vue'),
       },
