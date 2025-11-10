@@ -1,3 +1,4 @@
+<!-- src\components\layouts\TheHeader.vue -->
 <template>
   <header
     class="flex items-center justify-between bg-white text-gray-800 h-12 px-4 shadow-sm dark:bg-gray-900 dark:text-gray-100 transition-colors duration-300"

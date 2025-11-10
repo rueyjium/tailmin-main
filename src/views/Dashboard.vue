@@ -1,4 +1,4 @@
-<!-- src/views/Dashboard.vue -->
+<!-- src\views\Dashboard.vue -->
 <template>
   <div class="flex min-h-screen">
     <TheSidebar />
